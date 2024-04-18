@@ -1,0 +1,14 @@
+{
+    "builds": [
+        {
+            "use": "@vercel/next",
+            "src": "package.json"
+          },
+          {
+            "use": "@vercel/python",
+            "config": { "runtime": "python3.8" },
+            "src": "backend/index.py"
+          }
+    ]
+
+}  
