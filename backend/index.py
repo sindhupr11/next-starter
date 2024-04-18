@@ -20,6 +20,6 @@ app.add_middleware(
 def hello_world(request: Request):
     origin = request.headers.get("Origin")
     print(request.headers)
-    if origin not in allowed_domains:
+    if origin != allowed_domains:
         raise HTTPException(status_code=403, detail="Forbidden")
     return {"message": "Hello World"}
