@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 # Define your domain
-allowed_domains = ["http://localhost:3000"]  # Replace with your actual domain
+allowed_domains = ["http://localhost:3000", "127.0.0.1:8000", "next-starter-swart.vercel.app"]  # Replace with your actual domain
 
 # CORS middleware to allow only requests from the allowed domain
 app.add_middleware(
@@ -18,8 +18,8 @@ app.add_middleware(
 
 @app.get("/backend/python")
 def hello_world(request: Request):
-    origin = request.headers.get("Origin")
+    host = request.headers.get("host")
     print(request.headers)
-    if origin != allowed_domains:
+    if host != allowed_domains:
         raise HTTPException(status_code=403, detail="Forbidden")
     return {"message": "Hello World"}
