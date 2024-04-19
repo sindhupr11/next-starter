@@ -1,7 +1,6 @@
-import { getServerSession } from "next-auth";
-import { options } from "../api/auth/[...nextauth]/options"
+"use client"
 import { Button } from "@/components/ui/button"
-import Link from "next/link";
+import { useEarthoOne } from '@eartho/one-client-react';
 
 async function getProjects(acesstoken) {
   
@@ -17,26 +16,51 @@ async function getProjects(acesstoken) {
   return projects.message
 }
 
-export default async function Dashboard() {
-  const session =  await getServerSession(options)
+export default function Dashboard() {
+  const {
+    isLoading,
+    isConnected,
+    error,
+    user,
+    connectWithPopup,
+    logout,
+  } = useEarthoOne();
 
-  const projects = await getProjects(session.acesstoken)
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Oops... {error.message}</div>;
+  }
+
+  if (isConnected) {
 
   return (
   <div style={{justifyContent:"center", display:"flex", alignItems:"center", alignContent:"center", height:"100vh", flexDirection:"column"}}>
     <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl m-5">
-            Hi {session.user.name}<br/>
+            Hi {user.displayName}<br/>
     </h1>
-
-    <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight m-10 mt-5">
-      {projects}
-    </h3>
     
-    <Button variant="outline" asChild style={{backgroundColor:"white", color:"black"}}>
-    <Link href="/api/auth/signout" >Sign Out</Link>
+    <Button variant="outline" style={{backgroundColor:"white", color:"black"}} onClick={() => logout({ returnTo: "/dashboard" })}>
+    Sign Out
     </Button>
 
     
   </div>
   )
+} else {
+  return (
+    <div style={{justifyContent:"center", display:"flex", alignItems:"center", alignContent:"center", height:"100vh", flexDirection:"column"}}>
+    <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl m-5">
+            Sign In<br/>
+    </h1>
+    
+    <Button variant="outline" style={{backgroundColor:"white", color:"black"}} onClick={() => connectWithPopup({ accessId: "UO2B7JQKjebPAQB73x5k" })}>
+    Sign In
+    </Button>
+
+    
+  </div>
+  )
+}
 }
