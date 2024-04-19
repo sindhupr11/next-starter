@@ -1,8 +1,7 @@
 "use client"
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { app, auth } from '../config';
+import { useRouter } from "next/navigation";
+import { auth } from '../config';
 
 const SignOutButton = () => {
   const router = useRouter();

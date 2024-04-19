@@ -1,8 +1,8 @@
-import './globals.css';
+import { cn } from "@/lib/utils";
+import { ThemeProvider } from "next-themes";
+import { Inter as FontSans } from "next/font/google";
 import 'react-awesome-button/dist/styles.css';
-import { Inter as FontSans } from "next/font/google"
-import { cn } from "@/lib/utils"
-import { ThemeProvider } from "next-themes"
+import './globals.css';
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -10,9 +10,7 @@ const fontSans = FontSans({
 })
 
 
-import {firebase} from 'firebase/app';
 import 'firebase/auth';
-import {app} from './config';
 
 
 export default function RootLayout({ children }) {

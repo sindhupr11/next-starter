@@ -1,12 +1,11 @@
 "use client"
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { app, auth } from '../config';
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import LargeText from "../components/LargeText";
 import SignOutButton from "../components/SignOutButton";
-import LargeText from "../components/LargeText"
-import SmallText from "../components/SmallText"
+import SmallText from "../components/SmallText";
 
 
 

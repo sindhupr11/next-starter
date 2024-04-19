@@ -1,7 +1,7 @@
 "use client"
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 const provider = new GoogleAuthProvider();
 
