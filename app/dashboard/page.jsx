@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   const fetchBackendData = async (accessToken) => {
     try {
-      const response = await fetch("http://localhost:3000/backend/python", {
+      const response = await fetch("/backend/python", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -32,7 +32,8 @@ export default function Dashboard() {
       }
   
       const responseData = await response.json();
-      setData(responseData.data);
+      console.log(responseData)
+      setData(responseData.message);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -67,6 +68,7 @@ export default function Dashboard() {
     <>
     <LargeText>
             Hi {user.displayName}<br/>
+            {data}
     </LargeText>
     <SignOutButton/>
     </>
