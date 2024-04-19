@@ -12,9 +12,7 @@ const GoogleSignIn = () => {
 
   return (
     <>
-        <LargeText>
-            Please Sign In<br/>
-        </LargeText>
+    <LargeText value={"Please Sign In"}/>
     <SignInButton />
     </>
   );
