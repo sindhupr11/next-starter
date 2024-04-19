@@ -1,66 +1,75 @@
 "use client"
-import { Button } from "@/components/ui/button"
-import { useEarthoOne } from '@eartho/one-client-react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { app, auth } from '../config';
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react";
+import CircularProgress from '@mui/material/CircularProgress';
+import SignOutButton from "../components/SignOutButton";
+import LargeText from "../components/LargeText"
 
-async function getProjects(acesstoken) {
-  
-  const res = await fetch(`http://localhost:3000/backend/python`,
-  {
-    headers: {
-      Authorization: `Bearer ${acesstoken}`,
-    },
-    cache: 'no-store'
-  })
-  const projects = await res.json()
-  console.log(projects)
-  return projects.message
-}
+
+
+
 
 export default function Dashboard() {
-  const {
-    isLoading,
-    isConnected,
-    error,
-    user,
-    connectWithPopup,
-    logout,
-  } = useEarthoOne();
+  const router = useRouter();
+  const [user, setUser] = useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+
+  const fetchBackendData = async (accessToken) => {
+    try {
+      const response = await fetch("http://localhost:3000/backend/python", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+  
+      const responseData = await response.json();
+      setData(responseData.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const auth = getAuth();
+
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        console.log(currentUser)
+        setUser(currentUser);
+        fetchBackendData(currentUser.accessToken);
+      } else {
+        router.push('/signin'); 
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (!user || loading) {
+    return (<>
+    <CircularProgress color="secondary" size={"3em"} />
+    </>
+    ); 
   }
-  if (error) {
-    return <div>Oops... {error.message}</div>;
-  }
 
-  if (isConnected) {
-
-  return (
-  <div style={{justifyContent:"center", display:"flex", alignItems:"center", alignContent:"center", height:"100vh", flexDirection:"column"}}>
-    <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl m-5">
+    return (
+    <>
+    <LargeText>
             Hi {user.displayName}<br/>
-    </h1>
-    
-    <Button variant="outline" style={{backgroundColor:"white", color:"black"}} onClick={() => logout({ returnTo: "/dashboard" })}>
-    Sign Out
-    </Button>
-
-    
-  </div>
+    </LargeText>
+    <SignOutButton/>
+    </>
   )
-} else {
-  return (
-    <div style={{justifyContent:"center", display:"flex", alignItems:"center", alignContent:"center", height:"100vh", flexDirection:"column"}}>
-    <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl m-5">
-            Sign In<br/>
-    </h1>
-    
-    <Button variant="outline" style={{backgroundColor:"white", color:"black"}} onClick={() => connectWithPopup({ accessId: "UO2B7JQKjebPAQB73x5k" })}>
-    Sign In
-    </Button>
-
-    
-  </div>
-  )
-}
+  
 }
