@@ -18,4 +18,4 @@ app.add_middleware(
 
 @app.get("/backend/python")
 def hello_world(request: Request):
-    return request.headers
+    return {"message":request.headers.get("host")}
