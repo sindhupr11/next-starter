@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
 import SignOutButton from "../components/SignOutButton";
 import LargeText from "../components/LargeText"
+import SmallText from "../components/SmallText"
 
 
 
@@ -68,8 +69,11 @@ export default function Dashboard() {
     <>
     <LargeText>
             Hi {user.displayName}<br/>
-            {data}
+            
     </LargeText>
+    <SmallText>
+    {data}
+    </SmallText>
     <SignOutButton/>
     </>
   )
