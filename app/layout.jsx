@@ -10,6 +10,11 @@ const fontSans = FontSans({
 })
 
 
+<<<<<<< HEAD
+=======
+
+import {firebase} from 'firebase/app';
+>>>>>>> 193751e5766fc22282b92dd0386bf7e536249280
 import 'firebase/auth';
 
 
